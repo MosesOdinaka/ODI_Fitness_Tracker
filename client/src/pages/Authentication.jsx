@@ -5,6 +5,10 @@ import AuthImage from "../utils/Images/AuthImage.jpg";
 import SignIn from "../components/SignIn";
 import SignUp from "../components/SignUp";
 
+/**
+ * Container: Main layout container for the authentication page.
+ * Uses flexbox for layout and adjusts direction based on screen width.
+ */
 const Container = styled.div`
   flex: 1;
   height: 100%;
@@ -14,6 +18,11 @@ const Container = styled.div`
     flex-direction: column;
   }
 `;
+
+/**
+ * Left: Left side of the authentication layout.
+ * Contains the logo and background image, hidden on small screens.
+ */
 const Left = styled.div`
   flex: 1;
   position: relative;
@@ -21,6 +30,11 @@ const Left = styled.div`
     display: none;
   }
 `;
+
+/**
+ * Logo: Styled image for the logo.
+ * Positioned absolutely within the `Left` container.
+ */
 const Logo = styled.img`
   position: absolute;
   width: 70px;
@@ -28,6 +42,11 @@ const Logo = styled.img`
   left: 60px;
   z-index: 10;
 `;
+
+/**
+ * Image: Styled image for the background image in the `Left` container.
+ * Uses object-fit to cover the entire area.
+ */
 const Image = styled.img`
   position: relative;
   height: 100%;
@@ -35,6 +54,10 @@ const Image = styled.img`
   object-fit: cover;
 `;
 
+/**
+ * Right: Right side of the authentication layout.
+ * Contains sign-in and sign-up components and their toggle buttons.
+ */
 const Right = styled.div`
   flex: 1;
   position: relative;
@@ -46,6 +69,10 @@ const Right = styled.div`
   justify-content: center;
 `;
 
+/**
+ * Text: Styled text component for descriptive text.
+ * Center-aligned with responsive font size.
+ */
 const Text = styled.div`
   font-size: 16px;
   text-align: center;
@@ -55,6 +82,11 @@ const Text = styled.div`
     font-size: 14px;
   }
 `;
+
+/**
+ * TextButton: Styled span for interactive text.
+ * Changes color and weight on hover, used for toggling views.
+ */
 const TextButton = styled.span`
   color: ${({ theme }) => theme.primary};
   cursor: pointer;
@@ -62,8 +94,14 @@ const TextButton = styled.span`
   font-weight: 600;
 `;
 
+/**
+ * Authentication: Functional component for the authentication page.
+ * Manages state to toggle between sign-in and sign-up views.
+ * Renders the corresponding component based on the `login` state.
+ */
 const Authentication = () => {
   const [login, setLogin] = useState(false);
+
   return (
     <Container>
       <Left>
