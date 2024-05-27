@@ -110,7 +110,7 @@ const Dashboard = () => {
 
   const dashboardData = async () => {
     setLoading(true);
-    const token = localStorage.getItem("fittrack-app-token");
+    const token = localStorage.getItem("fitnesstracker-app-token");
     await getDashboardDetails(token).then((res) => {
       setData(res.data);
       console.log(res.data);
@@ -120,7 +120,7 @@ const Dashboard = () => {
 
   const getTodaysWorkout = async () => {
     setLoading(true);
-    const token = localStorage.getItem("fittrack-app-token");
+    const token = localStorage.getItem("fitnesstracker-app-token");
     await getWorkouts(token, "").then((res) => {
       setTodaysWorkouts(res?.data?.todaysWorkouts);
       console.log(res.data);
@@ -130,6 +130,55 @@ const Dashboard = () => {
 
   const addNewWorkout = async () => {
     setButtonLoading(true);
-    const token = localStorage.getItem("fittrack-app-token");
+    const token = localStorage.getItem("fitnesstracker-app-token");
     await addWorkout(token, { workoutString: workout })
       .then((res) => {
+        dashboardData();
+        getTodaysWorkout();
+        setButtonLoading(false);
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  };
+
+  useEffect(() => {
+    dashboardData();
+    getTodaysWorkout();
+  }, []);
+
+  return (
+    <Container>
+      <Wrapper>
+        <Title>Home</Title>
+        <FlexWrap>
+          {counts.map((item) => (
+            <CountsCard item={item} data={data} />
+          ))}
+        </FlexWrap>
+
+        <FlexWrap>
+          <WeeklyStatCard data={data} />
+          <CategoryChart data={data} />
+          <AddWorkout
+            workout={workout}
+            setWorkout={setWorkout}
+            addNewWorkout={addNewWorkout}
+            buttonLoading={buttonLoading}
+          />
+        </FlexWrap>
+
+        <Section>
+          <Title>Today's Exercise</Title>
+          <CardWrapper>
+            {todaysWorkouts.map((workout) => (
+              <WorkoutCard workout={workout} />
+            ))}
+          </CardWrapper>
+        </Section>
+      </Wrapper>
+    </Container>
+  );
+};
+
+export default Dashboard;
