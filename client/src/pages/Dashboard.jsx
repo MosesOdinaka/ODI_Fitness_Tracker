@@ -109,39 +109,49 @@ const Dashboard = () => {
 -10 min`);
 
   const dashboardData = async () => {
-    setLoading(true);
-    const token = localStorage.getItem("fitnesstracker-app-token");
-    await getDashboardDetails(token).then((res) => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("fittrack-app-token");
+      const res = await getDashboardDetails(token);
       setData(res.data);
       console.log(res.data);
+    } catch (error) {
+      console.error("Error fetching dashboard data", error);
+    } finally {
       setLoading(false);
-    });
+    }
   };
 
   const getTodaysWorkout = async () => {
-    setLoading(true);
-    const token = localStorage.getItem("fitnesstracker-app-token");
-    await getWorkouts(token, "").then((res) => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("fittrack-app-token");
+      const res = await getWorkouts(token, "");
       setTodaysWorkouts(res?.data?.todaysWorkouts);
       console.log(res.data);
+    } catch (error) {
+      console.error("Error fetching today's workouts", error);
+    } finally {
       setLoading(false);
-    });
+    }
   };
 
   const addNewWorkout = async () => {
-    setButtonLoading(true);
-    const token = localStorage.getItem("fitnesstracker-app-token");
-    await addWorkout(token, { workoutString: workout })
-      .then((res) => {
-        dashboardData();
-        getTodaysWorkout();
-        setButtonLoading(false);
-      })
-      .catch((err) => {
-        alert(err);
-      });
+    try {
+      setButtonLoading(true);
+      const token = localStorage.getItem("fittrack-app-token");
+      const res = await addWorkout(token, { workoutString: workout });
+      console.log("Workout added successfully", res);
+      // Assuming you want to refresh data after adding a workout
+      await dashboardData();
+    } catch (error) {
+      console.error("Error adding workout", error);
+    } finally {
+      setButtonLoading(false);
+    }
   };
 
+  // Fetch dashboard data and today's workouts on component mount
   useEffect(() => {
     dashboardData();
     getTodaysWorkout();
@@ -150,32 +160,16 @@ const Dashboard = () => {
   return (
     <Container>
       <Wrapper>
-        <Title>Home</Title>
-        <FlexWrap>
-          {counts.map((item) => (
-            <CountsCard item={item} data={data} />
-          ))}
-        </FlexWrap>
-
-        <FlexWrap>
-          <WeeklyStatCard data={data} />
-          <CategoryChart data={data} />
-          <AddWorkout
-            workout={workout}
-            setWorkout={setWorkout}
-            addNewWorkout={addNewWorkout}
-            buttonLoading={buttonLoading}
-          />
-        </FlexWrap>
-
-        <Section>
-          <Title>Today's Exercise</Title>
-          <CardWrapper>
-            {todaysWorkouts.map((workout) => (
-              <WorkoutCard workout={workout} />
-            ))}
-          </CardWrapper>
-        </Section>
+        <Title>Dashboard</Title>
+        {/* Render components here */}
+        {/* Example: */}
+        <CountsCard item={{}} data={data} />
+        <WeeklyStatCard data={data} />
+        <CategoryChart data={data} />
+        <AddWorkout onAddWorkout={addNewWorkout} loading={buttonLoading} />
+        {todaysWorkouts.map((workout, index) => (
+          <WorkoutCard key={index} workout={workout} />
+        ))}
       </Wrapper>
     </Container>
   );
