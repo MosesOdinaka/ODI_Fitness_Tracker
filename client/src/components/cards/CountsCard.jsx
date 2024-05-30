@@ -126,15 +126,18 @@ const Desc = styled.div`
  * @returns {JSX.Element} The rendered CountsCard component.
  */
 const CountsCard = ({ item, data }) => {
+  // Ensure the value is defined and is a number
+  const value = data && typeof data[item.key] === 'number' ? data[item.key].toFixed(2) : '0.00';
+
   return (
     <Card>
       <Left>
         <Title>{item.name}</Title>
         <Value>
-          {data && data[item.key].toFixed(2)}
+          {value}
           <Unit>{item.unit}</Unit>
           <Span positive>(+10%)</Span>
-        </Value>
+   j     </Value>
         <Desc>{item.desc}</Desc>
       </Left>
       <Icon color={item.color} bg={item.lightColor}>
