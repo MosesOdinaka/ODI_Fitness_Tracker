@@ -6,19 +6,6 @@ import UserRoutes from "./routes/User.js";
 
 dotenv.config();
 
-/**
- * This module sets up an Express server with the following configurations:
- * 
- * - Uses dotenv to manage environment variables.
- * - Configures CORS (Cross-Origin Resource Sharing) to allow cross-origin requests.
- * - Parses incoming JSON requests and URL-encoded data.
- * - Connects to a MongoDB database using Mongoose.
- * - Defines a simple API endpoint and includes user-related routes.
- * - Implements basic error handling middleware.
- * 
- * The server listens on port 8080.
- */
-
 const app = express();
 
 // Middleware setup
@@ -43,8 +30,21 @@ app.use((err, req, res, next) => {
 // Root endpoint
 app.get("/", async (req, res) => {
   res.status(200).json({
-    message: "Hello developers from GFG",
+    message: "Hello developers from Odinaka Fitness Tracker",
   });
+});
+
+/**
+ * Verify MongoDB connection
+ * Adds a route to check the status of the MongoDB connection.
+ */
+app.get("/api/status", async (req, res) => {
+  try {
+    await mongoose.connection.db.admin().ping();
+    res.status(200).send("MongoDB is connected!");
+  } catch (err) {
+    res.status(500).send("MongoDB connection failed!");
+  }
 });
 
 /**
@@ -55,10 +55,13 @@ app.get("/", async (req, res) => {
 const connectDB = () => {
   mongoose.set("strictQuery", true);
   mongoose
-    .connect(process.env.MONGODB_URL)
-    .then(() => console.log("Connected to Mongo DB"))
+    .connect(process.env.MONGODB_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    .then(() => console.log("Connected to MongoDB"))
     .catch((err) => {
-      console.error("failed to connect with mongo");
+      console.error("Failed to connect to MongoDB");
       console.error(err);
     });
 };
