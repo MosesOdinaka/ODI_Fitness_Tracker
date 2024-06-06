@@ -30,7 +30,7 @@ app.use((err, req, res, next) => {
 // Root endpoint
 app.get("/", async (req, res) => {
   res.status(200).json({
-    message: "Hello developers from Odinaka Fitness Tracker",
+    message: "Hello! I'm Moses and the server is running.",
   });
 });
 
