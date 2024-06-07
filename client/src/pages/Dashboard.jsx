@@ -163,10 +163,13 @@ const Dashboard = () => {
         <Title>Dashboard</Title>
         {/* Render components here */}
         {/* Example: */}
+        {/* CountsCard, WeeklyStatCard, and CategoryChart components */}
         <CountsCard item={{}} data={data} />
         <WeeklyStatCard data={data} />
         <CategoryChart data={data} />
-        <AddWorkout onAddWorkout={addNewWorkout} loading={buttonLoading} />
+        {/* Pass setWorkout as a prop to AddWorkout component */}
+        <AddWorkout setWorkout={setWorkout} onAddWorkout={addNewWorkout} loading={buttonLoading} />
+        {/* Render WorkoutCard components for today's workouts */}
         {todaysWorkouts.map((workout, index) => (
           <WorkoutCard key={index} workout={workout} />
         ))}
